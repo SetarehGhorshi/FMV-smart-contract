@@ -1,5 +1,5 @@
 pragma solidity ^0.5.1;
-
+////////////////////////////////////////////////////////////////////////////// database contract
 contract FMVkeeper{
     mapping(address=>VideoContracts) Videos;
     constructor()public{
@@ -92,7 +92,7 @@ contract FMVkeeper{
     }
     
 }
-
+///////////////////////////////////////////////////////////////////////////////////////// video contract
 contract Videos {
   address public parent;
   bool public original;
