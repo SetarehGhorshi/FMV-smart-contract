@@ -5,6 +5,7 @@ contract FMVkeeper{
     constructor()public{
      k=0;   
     }
+    
     mapping(uint256=> bytes32) allHashes;
     mapping(uint256=> bytes32) allPHashes;
     mapping(uint256=> address) allContracts;
@@ -17,6 +18,7 @@ contract FMVkeeper{
    bytes32 hash;
    bytes32 perceptualH;
  }
+ ///////////////////////////////// this function only works when called from video contracts
     function addVideoChild(address contract_address,address parent_owner_address,address second_owner, bytes32 VideoHash,bytes32 perceptualH) external {
         require(Videos[msg.sender].vid_owner==parent_owner_address);
         Videos[contract_address]=VideoContracts({vid_owner:second_owner,parent:msg.sender,hash:VideoHash,original:false,perceptualH:perceptualH});
@@ -25,6 +27,7 @@ contract FMVkeeper{
         allContracts[k]=contract_address;
         k=k+1;
     }
+ ////////////////////////////////// adding an original video
     function addVideo(bytes32 hash, address contract_address,bytes32 perceptualH) external returns(bool){
     bool newVid = true;
     for(uint256 i = 0 ; i < k ; i++){
@@ -51,6 +54,7 @@ contract FMVkeeper{
      return false;
      }
     }
+ ///////////////////////////////////
     function getBit(bytes32 a, uint8 n) private returns (bool) {
         return a & shiftLeft(0x01, n) != 0;
     }
@@ -58,6 +62,7 @@ contract FMVkeeper{
         uint8 shifted = uint8(a) * 2 ** n;
         return bytes1(shifted);
     }
+  ///////////////////////////////// check if your video is valid
     function checkValidity(bytes32 hash, bytes32 perceptualH) external returns(bool, address){
     bool valid = false;
     address videoContractAddress;
@@ -116,6 +121,7 @@ contract Videos {
       address artist;
   }
   mapping(address=>finalPermssion) public finalPermssionReqs;
+  
   constructor(address  parent_input,bool  original_input,string memory info_input,bytes32  IPFS_Hash_input,string memory metadata_input,uint256 timestamp_input) public{
     parent=parent_input;  
     original=original_input;
@@ -132,13 +138,15 @@ contract Videos {
          require(user == owner );  
         _;
     }
-  /////////////////////////////////////
+  ///////////////////////////////////// ask the owner to edit their video
   function editRequest(bytes32 vid_hash, string calldata vid_metadata) external{
    editReq[numberOfEditReqs]=editRequests({artist:msg.sender,hash:vid_hash,metadata:vid_metadata,timestamp:now,editPermission:false});
   } 
+  //////////////////////////////////// owner accepts the edit request by id
 function acceptReq(uint256 id) external onlyOwner(msg.sender){
     editReq[id].editPermission = true;
 }
+/////////////////////////////////////// ask for final permission after creating your video's smart contract 
 function finalPermssionReq(address contract_address,bytes32 hash,bytes32 perceptualH) external returns(bool){
     uint256 userId;
  for(uint256 i = 0 ; i < numberOfEditReqs; i++){
@@ -156,12 +164,14 @@ function finalPermssionReq(address contract_address,bytes32 hash,bytes32 percept
      finalPermssionReqs[contract_address].artist=msg.sender;
      return true;
 }
+///////////////////////////////////////owner can accept the smart contracts after checking them and add them to the database
 function addChild(address contract_address, bytes32 hash)external onlyOwner(msg.sender){
     finalPermssionReqs[contract_address].accepted=true;
     FMVkeeper fmvkeeper = FMVkeeper(0x692a70D2e424a56D2C6C27aA97D1a86395877b3A);
                                     
     fmvkeeper.addVideoChild(contract_address,msg.sender,finalPermssionReqs[contract_address].artist,hash,finalPermssionReqs[contract_address].perceptualH);
 }
+/////////////////////////////////////////
 function getOwner()external returns(address){
     return owner;
 }
