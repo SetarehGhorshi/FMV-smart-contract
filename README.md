@@ -1,5 +1,8 @@
 # FMV-smart-contract
 This smart contract keeps videos from attacks and helps checking the validity of the edited videos. 
+Please note that all videos must be uploaded on [IPFS](https://ipfs.io/) and their hash must be used here. We also need the perceptual hash of the videos. 
+More info about perceptual hashing :
+https://www.phash.org/
 # FMVkeeper Contract (Database Contract)
 Keeps the list of all registered videos and helps people to check any video they find to know whether or not it is valid.
 
