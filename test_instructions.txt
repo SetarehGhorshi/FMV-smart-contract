@@ -1,0 +1,26 @@
+
+/////////// testing process
+
+constructor >> database contract >> put the address in the video smart contract code
+
+Artist 1 >> creating a contract for her/his video >> "0x0000000000000000000000000000000000000000",true,"new video","0x72f99116aca521ed18e2050fc6ab7684f7216fecae87aff8c838ed6f7e112eaf","star","5556677"
+
+Artist 1 >> adding the video to the database contract >> "0x72f99116aca521ed18e2050fc6ab7684f7216fecae87aff8c838ed6f7e112eaf","contract-address","0x28af6c307e714e51d656a3293479a3422e5f6acc857de44e22079d81b4932eb4"
+
+Artist 2 >> ask for edit permission >> "0xe6d0435264c54a31b85543866171133619a7152f6af1a0a394ceddeba5c9b42e","my edit"
+
+Artist 1>> accept request >> 0 (id of the request)
+
+Artist 2 >> create the smart contract for her/his edited video >> "parent-contract-address",false,"new  edited video","0xe6d0435264c54a31b85543866171133619a7152f6af1a0a394ceddeba5c9b42e","star 2","55566747"
+
+Artist 2 >> ask for final permission >> "new-created-contract-address","0xe6d0435264c54a31b85543866171133619a7152f6af1a0a394ceddeba5c9b42e","0x29af6c307e714e51d656a3293479a3422e5f6acc857de44e22079d81b4932eb4"
+
+Artist 1 >> give final permission and add child to the database contract >>"new-created-contract-address","0xe6d0435264c54a31b85543866171133619a7152f6af1a0a394ceddeba5c9b42e"
+
+//////////////////now the new child must be added to the database
+
+a user who wants to see if a video she/he has is valid, should do the following :
+
+user >> exact video>> check validity >> "0xe6d0435264c54a31b85543866171133619a7152f6af1a0a394ceddeba5c9b42e","0x29af6c307e714e51d656a3293479a3422e5f6acc857de44e22079d81b4932eb4" >> true "contract-address" >> valid
+user >> similar unregistered video>> check validity >> "0x252f10c83610ebca1a059c0bae8255eba2f95be4d1d7bcfa89d7248a82d9f111","0x29af6c307e714e50d656a3293479a3422e5f6acc857de44e22079d81b4932eb4" >> false "contract-address" >> not valid but the probable real video is found
+user >> different unregistered video>> check validity >> "0x05a9bf223fedf80a9d0da5f73f5c191a665bf4a0a4a3e608f2f9e7d5ff23959c","0x31366949fdae11539e78ea1d70fe18f66a4868b2a9cd3f615c76617cf093f0d5" >> false "address(0)" >> not valid
