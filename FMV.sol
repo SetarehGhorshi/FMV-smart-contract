@@ -167,6 +167,7 @@ function finalPermssionReq(address contract_address,bytes32 hash,bytes32 percept
 ///////////////////////////////////////owner can accept the smart contracts after checking them and add them to the database
 function addChild(address contract_address, bytes32 hash)external onlyOwner(msg.sender){
     finalPermssionReqs[contract_address].accepted=true;
+    /////////////////////////put the address of FMVkeeper contract here
     FMVkeeper fmvkeeper = FMVkeeper(0x692a70D2e424a56D2C6C27aA97D1a86395877b3A);
                                     
     fmvkeeper.addVideoChild(contract_address,msg.sender,finalPermssionReqs[contract_address].artist,hash,finalPermssionReqs[contract_address].perceptualH);
